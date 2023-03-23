@@ -29,7 +29,7 @@ function addFunds() public payable{
    function sendAmount(address to,uint amount) payable public {
  uint balce= balances[msg.sender];
  if(balce>amount){
- payable(to).transfer(amount);
+ payable(to).transfer(amount);  
  }
    } 
 
