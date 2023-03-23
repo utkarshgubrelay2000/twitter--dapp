@@ -6,10 +6,11 @@ import errorImg from "../assets/error.png";
 import twitterImg from "../assets/twitter.png";
 import Image from "next/image";
 import { Button, FormControl, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import useAuth from "../hooks/useAuth";
+import { useAppContext } from "../context/useProvider";
 const style = {
   wrapper: `flex justify-center h-screen w-screen select-none  text-white`,
   content: `max-w-[1400px] w-2/3 flex justify-between`,
@@ -22,7 +23,11 @@ const Home = () => {
   const [tweet, setTweet] = useState([]);
   const [userData, setUserdata] = useState({email:""});
   const { loginFunction } = useAuth();
-
+  const {chainChanged,provider} =useAppContext()
+  useEffect(()=>{
+   
+    chainChanged()
+  },[provider])
   const submitHandler = async () => {
     console.log(userData);
     if (userData?.email) {

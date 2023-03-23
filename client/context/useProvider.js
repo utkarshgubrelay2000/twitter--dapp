@@ -1,72 +1,64 @@
-import Web3 from "web3";
+import { ethers } from "ethers";
 import { createContext, useContext, useEffect, useState } from "react";
-import {LoadContract} from './ContractLoader'
+
 export const TwitterContext = createContext();
-export const TwitterProvider = ({children}) => {
-  const [provider,setProvider]=useState(null)
-  const [web3Hooks, setweb3Hooks] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [contract,setContract]=useState(null);
+export const TwitterProvider = ({ children }) => {
+  const [ether, setEther] = useState("");
+  const [account, setAccount] = useState("");
+  const [provider, setProvider] = useState("");
   useEffect(() => {
-    getWeb3Data();
-    chainChanged()
-    
+    setProvider(window.ethereum);
+    if (provider) {
+      getEthers();
+    }
+  }, [1]);
+  useEffect(() => {
+    chainChanged();
   }, [provider]);
-useEffect(()=>{
- Loader()
-},[web3Hooks])
-const Loader=async ()=>{
-  try {
-    
-    let con= await LoadContract('Migrations',web3Hooks)
-    console.log(con)
-    setContract(con)
-  } catch (error) {
-    console.log(error)
-  }
-}
-  const getWeb3Data = async () => {
-    let p=window.ethereum
-    setProvider(p)
-    if(p){
-        const web3 = new Web3(p);
-        let accounts = await web3.eth.getAccounts();
-        setAccount(accounts[0]);
-        setweb3Hooks(web3);
+  const getEthers = async () => {
+    try {
+      // .log(provider);
+
+      if (provider) {
+        connect()
+        const eth = new ethers.providers.Web3Provider(window.ethereum);
+
+        setEther(eth);
+      }
+    } catch (error) {
+      // .log(error);
     }
   };
- 
-  const chainChanged=()=>{
- if(provider){
-
-   provider && provider.on('accountsChanged',account=>{
-     //  console.log(account)
-     setAccount(account[0])
-    })
-    provider &&  provider.on('chainChanged', (chainId) => {
-      window.location.reload();
-    });
-  }
-}
-  const connectWallet=async ()=>{
-    console.log('hello')
-    try {
-      
-      await  provider.request({method:"eth_requestAccounts"})
-    } catch (error) {
-      console.log(error)
+  const chainChanged = () => {
+    if (provider) {
+      window.ethereum.on("accountsChanged", function (networkId) {
+        // .log("changed");
+        console.log(networkId)
+        setAccount(networkId[0])
+      });
+      provider.on("networkChanged", function (networkId) {
+        // Time to reload your interface with the new networkId
+        // .log("provider");
+      });
     }
-  } 
+  };
+  useEffect(()=>{
+    connect()
+  },[account])
+  const connect = async () => {
+    // .log(ether);
+    if(provider){
+
+      let accounts = await provider.request({method:"eth_requestAccounts"});
+      console.log(accounts, "ether");
+      
+      setAccount(accounts[0]);
+    }
+   
+  };
   return (
     <TwitterContext.Provider
-      value={{
-        connectWallet:connectWallet,
-        web3Hooks:web3Hooks,
-        accounts:account,
-        provider:provider,
-        contract:contract,
-        chainChanged:chainChanged
-      }}
+      value={{ chainChanged, provider, ether, connect, account }}
     >
       {children}
     </TwitterContext.Provider>
@@ -74,6 +66,5 @@ const Loader=async ()=>{
 };
 
 export function useAppContext() {
-    return useContext(TwitterContext);
- }
- 
+  return useContext(TwitterContext);
+}
