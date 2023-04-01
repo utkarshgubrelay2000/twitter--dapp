@@ -1,7 +1,8 @@
+import Layout from '../components/Layout'
 import ProfileHeader from '../components/profile/ProfileHeader'
 import ProfileTweets from '../components/profile/ProfileTweets'
 import Sidebar from '../components/Sidebar'
-import Widgets from '../components/Widgets'
+import Feed from "../components/home/Feed";
 
 const style = {
   wrapper: `flex justify-center h-screen w-screen select-none bg-[#15202b] text-white`,
@@ -11,16 +12,21 @@ const style = {
 
 const profile = () => {
   return (
+    <Layout>
+
     <div className={style.wrapper}>
       <div className={style.content}>
         <Sidebar initialSelectedIcon={'Profile'} />
+        
         <div className={style.mainContent}>
           <ProfileHeader />
+          <Feed/>
           <ProfileTweets />
         </div>
-        <Widgets />
+       
       </div>
     </div>
+    </Layout>
   )
 }
 

@@ -1,5 +1,4 @@
-import metamaskLogo from "../assets/metamask.png";
-import errorImg from "../assets/error.png";
+
 import Image from "next/image";
 import { useAppContext } from "../context/useProvider";
 import { useEffect, useState } from "react";
@@ -36,13 +35,13 @@ if(account){
 }
 },[account])
   const changeProviderStatus =async () => {
+    console.log(account)
     if (provider) {
-      await connect()
-      console.log(account);
       if(!account){
-
-     setProviderStatus("waitingForConnection");
-    } 
+      setProviderStatus("waitingForConnection");
+    } else{
+      setProviderStatus("")
+    }
   
     } else {
       setProviderStatus("metamaskNotFound");
@@ -51,7 +50,7 @@ if(account){
   
   const noUserFound = (
     <div className={style.loginContainer}>
-      <Image src={metamaskLogo} width={200} height={200} />
+      <Image src="/assets/metamask.png" width={200} height={200} />
       <div className={style.walletConnectButton} onClick={() => connect()}>
         Connect Wallet
       </div>
@@ -61,7 +60,7 @@ if(account){
 
   const noMetaMaskFound = (
     <div className={style.loginContainer}>
-      <Image src={metamaskLogo} width={200} height={200} />
+      <Image src="/assets/metamask.png" width={200} height={200} />
       <div className={style.loginContent}>
         <a
           target="_blank"
@@ -77,7 +76,7 @@ if(account){
 
   const error = (
     <div className={style.loginContainer}>
-      <Image src={errorImg} width={250} height={200} />
+      <Image src='/assets/error.png' width={250} height={200} />
       <div className={style.loginContent}>
         An error occurred. Please try again later or from another browser.
       </div>

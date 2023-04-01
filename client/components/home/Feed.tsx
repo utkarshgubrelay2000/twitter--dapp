@@ -3,9 +3,10 @@ import { TwitterContext } from "../../context/TwitterContext";
 import TweetBox from "./TweetBox";
 import Post from "../Post";
 import { BsStars } from "react-icons/bs";
+import { useAppContext } from "../../context/useProvider";
 
 const style = {
-  wrapper: `flex-[2] border-r border-l border-[#38444d] overflow-y-scroll`,
+  wrapper: `flex-[2] border-r border-l border-[#38444d] `,
   header: `sticky top-0 bg-[#15202b] z-10 p-4 flex justify-between items-center`,
   headerTitle: `text-xl font-bold`,
 };
@@ -25,7 +26,7 @@ interface TweetAuthor {
 
 function Feed(props:any) {
   // const { tweets } = useContext(TwitterContext)
-  
+ 
   return (
     <div className={`${style.wrapper} no-scrollbar`}>
       <div className={style.header}>

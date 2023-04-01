@@ -34,9 +34,9 @@ getFollowers();
   const getFollowers=async ()=>{
     console.log('getFolooow')
     if(contract){
-      let res=await contract.methods.getAllUsers().call()
-      console.log(res)
-      setFollow(res)
+      // let res=await contract.methods.getAllUsers().call()
+      // console.log(res)
+      // setFollow(res)
     }
   }
   const Follow=async(id:any)=>{

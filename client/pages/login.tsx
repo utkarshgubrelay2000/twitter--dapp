@@ -1,9 +1,3 @@
-import Feed from "../components/home/Feed";
-import Sidebar from "../components/Sidebar";
-import Widgets from "../components/Widgets";
-import metamaskLogo from "../assets/metamask.png";
-import errorImg from "../assets/error.png";
-import twitterImg from "../assets/twitter.png";
 import Image from "next/image";
 import { Button, FormControl, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -32,66 +26,20 @@ const Home = () => {
     console.log(userData);
     if (userData?.email) {
       let result = await loginFunction(userData);
+      console.log(result)
     } else {
       alert("Email not found");
     }
   };
 
-  const userLoggedIn = (
-    <div className={style.content}>
-      <Sidebar initialSelectedIcon={"Home"} />
-      <Feed tweet={tweet} />
-      <Widgets />
-    </div>
-  );
+ 
 
-  const noUserFound = (
-    <div className={style.loginContainer}>
-      <Image src={metamaskLogo} width={200} height={200} />
-      <div
-        className={style.walletConnectButton}
-        //   onClick={() => connectWallet()}
-      >
-        Connect Wallet
-      </div>
-      <div className={style.loginContent}>Connect to Metamask.</div>
-    </div>
-  );
 
-  const noMetaMaskFound = (
-    <div className={style.loginContainer}>
-      <Image src={metamaskLogo} width={200} height={200} />
-      <div className={style.loginContent}>
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href={`https://metamask.io/download.html`}
-        >
-          You must install Metamask, a <br /> virtual Ethereum wallet, in your
-          browser.
-        </a>
-      </div>
-    </div>
-  );
-
-  const error = (
-    <div className={style.loginContainer}>
-      <Image src={errorImg} width={250} height={200} />
-      <div className={style.loginContent}>
-        An error occurred. Please try again later or from another browser.
-      </div>
-    </div>
-  );
-
-  const loading = (
-    <div className={style.loginContainer}>
-      <div className={style.loginContent}>Loading...</div>
-    </div>
-  );
+ 
 
   const Logo = (
     <div className={style.loginContainer}>
-      <Image src={twitterImg} width={200} height={160} />
+      <Image src="/assets/twitter.png" width={200} height={160} />
       <div className={style.loginContent}>Welcome To Daptter</div>
     </div>
   );

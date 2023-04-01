@@ -7,7 +7,7 @@ task("verify-etherscan", "Verify deployed contract on ")
       let a=await hre.ethers.getSigners()
       await hre.run("verify:verify", {
         address: taskars.contract,
-				contract: 'contracts/Lock.sol' // <path-to-contract>:<contract-name>
+				contract: 'contracts/Transaction.sol' // <path-to-contract>:<contract-name>
       })
     } catch ({ message }) {
       console.error(message)

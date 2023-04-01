@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
-import { TwitterContext } from '../../context/TwitterContext'
+
 import { BsArrowLeftShort } from 'react-icons/bs'
 import { useRouter } from 'next/router'
 import Modal from 'react-modal'
-import ProfileImageMinter from './mintingModal/ProfileImageMinter'
-import { customStyles } from '../../lib/constants'
+
+import { useAppContext } from '../../context/useProvider'
+import { useState } from 'react'
 
 Modal.setAppElement('#__next')
 
@@ -42,6 +42,8 @@ interface UserData {
 const ProfileHeader = () => {
   //const { currentAccount, currentUser } = useContext(TwitterContext)
   const router = useRouter()
+  const { contract, account } = useAppContext();
+
   const [userData, setUserData] = useState<UserData>({
     name: '',
     profileImage: '',
@@ -67,7 +69,7 @@ const ProfileHeader = () => {
       </div>
       <div className={style.coverPhotoContainer}>
         <img
-          src={userData.coverImage}
+          src='https://images.pexels.com/photos/14737351/pexels-photo-14737351.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
           alt='cover'
           className={style.coverPhoto}
         />
@@ -89,7 +91,9 @@ const ProfileHeader = () => {
       </div>
       <div className={style.details}>
         <div>
-          <div className={style.primary}>{"utkarsh"}</div>
+          <div className={style.primary}> <>
+              @{account?.slice(0, 8)}...{account?.slice(37)}
+            </></div>
         </div>
         <div className={style.secondary}>
           {/* {currentAccount && (

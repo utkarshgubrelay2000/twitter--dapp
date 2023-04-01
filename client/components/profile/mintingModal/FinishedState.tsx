@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { TwitterContext } from '../../../context/TwitterContext'
 import Image from 'next/image'
-import checkMark from '../../../assets/check.png'
+
 import { useRouter } from 'next/router'
 
 const style = {
@@ -21,7 +21,7 @@ const FinishedState = () => {
   return (
     <div className={style.wrapper}>
       <div className={style.title}>Minting Successful!</div>
-      <Image src={checkMark} alt='checkmark' height={100} width={100} />
+      <Image src='/assets/check.png' alt='checkmark' height={100} width={100} />
       <div onClick={() => router.push('/')} className={style.closeButton}>
         Close
       </div>

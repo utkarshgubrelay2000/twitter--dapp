@@ -5,6 +5,7 @@ import { FiShare } from 'react-icons/fi'
 import { format } from 'timeago.js'
 import { useState } from 'react'
 import { useAppContext } from '../context/useProvider'
+import { ethers } from 'ethers'
 
 const style = {
   wrapper: `flex p-3 border-b border-[#38444d]`,
@@ -41,7 +42,7 @@ const Post = ({
 }: PostProps) => {
   const [profileImageLink] = useState(avatar)
   const { contract,accounts } = useAppContext()
-
+console.log(Number(ethers.utils.formatEther(timestamp))*1000000000000000000)
   const Retweet=async(e:any)=>{
     e.preventDefault();
     console.log(contract)
@@ -73,7 +74,7 @@ const Post = ({
               </span>
             )}
             <span className={style.handleAndTimeAgo}>
-              @{userName} • {format(new Date(timestamp).getTime())}
+              @{userName} • {format(new Date(Number(ethers.utils.formatEther(timestamp))*1000000000000000000))}
             </span>
           </span>
           <div className={style.tweet}>{text}</div>

@@ -23,16 +23,14 @@ const style = {
 
 function TweetBox() {
   const [tweetMessage, setTweetMessage] = useState('')
-  const { contract,accounts } = useAppContext()
-
-const AddTweet=async(e:any)=>{
-  e.preventDefault();
-  console.log(contract)
-  if(contract){
-   let res= await contract.methods.addTweet(tweetMessage,'img').send({from:accounts})
-    console.log(res)
+  const { contract,account } = useAppContext()
+  const AddTweet=async(e:any)=>{
+    e.preventDefault()
+  const newDate=new Date();
+  let tp=newDate.getTime()
+   await  contract.createPost(tp,tweetMessage)
+ // console.log(new Date(tp).toUTCString(),tp)
   }
-}
 
   return (
     <div className={style.wrapper}>
