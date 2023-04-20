@@ -3,7 +3,13 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     BACKEND_URL: 'http://localhost:4000',
-    TWITTER_CONTRACT:"0x50CB4EC676E83d5f107B23827d4C7d35788DbAC7"
+    TWITTER_CONTRACT:process.env.TWITTER_CONTRACT,
+    USER_CONTRACT:process.env.USER_CONTRACT,
+   // TRASACTION_CONTRACT:process.env.TWITTER_CONTRACT
+   PROJECTID:process.env.PROJECTID,
+   SUBDOMAIN:process.env.SUBDOMAIN,
+   PROJECTSECRET:process.env.PROJECTSECRET,
+
   },
 }
 

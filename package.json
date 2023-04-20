@@ -1,7 +1,10 @@
 {
   "dependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
-    "@openzeppelin/contracts": "^4.8.2"
+    "@openzeppelin/contracts": "^4.8.2",
+    "@types/styled-components": "^5.1.26",
+    "react-bootstrap": "^2.7.4",
+    "styled-components": "^5.3.9"
   },
   "devDependencies": {
     "hardhat": "^2.13.0",
