@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import { TwitterContext } from '../../../context/TwitterContext'
 import { useRouter } from 'next/router'
-import { client } from '../../../lib/client'
+
 import { contractABI, contractAddress } from '../../../lib/constants'
 import { ethers } from 'ethers'
 import InitialState from './InitialState'
@@ -59,50 +59,7 @@ const ProfileImageMinter = () => {
   const [status, setStatus] = useState('initial')
   const [profileImage, setProfileImage] = useState<File>()
 
-  const mint = async () => {
-    if (!name || !description || !profileImage) return
-    setStatus('loading')
 
-    const pinataMetaData = {
-      name: `${name} - ${description}`,
-    }
-
-    const ipfsImageHash = await pinFileToIPFS(profileImage, pinataMetaData)
-
-    await client
-      .patch(currentAccount)
-      .set({ profileImage: ipfsImageHash })
-      .set({ isProfileImageNft: true })
-      .commit()
-
-    const imageMetaData: Metadata = {
-      name: name,
-      description: description,
-      image: `ipfs://${ipfsImageHash}`,
-    }
-
-    const ipfsJsonHash = await pinJSONToIPFS(imageMetaData)
-
-    const contract = await getEthereumContract()
-
-    const transactionParameters = {
-      to: contractAddress,
-      from: currentAccount,
-      data: await contract.mint(currentAccount, `ipfs://${ipfsJsonHash}`),
-    }
-
-    try {
-      await metamask.request({
-        method: 'eth_sendTransaction',
-        params: [transactionParameters],
-      })
-
-      setStatus('finished')
-    } catch (error: any) {
-      console.log(error)
-      setStatus('finished')
-    }
-  }
 
   const renderLogic = (modalStatus = status) => {
     switch (modalStatus) {
@@ -115,7 +72,7 @@ const ProfileImageMinter = () => {
             setName={setName}
             description={description}
             setDescription={setDescription}
-            mint={mint}
+            mint={()=>{}}
           />
         )
 

@@ -45,3 +45,34 @@ export const login = async (data:any) => {
   }
 
 };
+
+export const get_my_profile = async (data:string) => {
+
+    const res = await fetch('/api/protected/', {
+        method: 'POST',
+        body: JSON.stringify({
+            request_type: 'GET',
+            target_url: `/profile`,
+            token:data
+        }),
+     
+    })
+  
+ 
+        return res?.json()
+    
+  };
+  export const check_token = async (data:string) => {
+
+    const res = await fetch('/api/protected/', {
+        method: 'POST',
+        body: JSON.stringify({
+            request_type: 'GET',
+            target_url: `/auth/check-token`,
+            token:data
+        }),
+     
+    })
+
+        return res
+  };

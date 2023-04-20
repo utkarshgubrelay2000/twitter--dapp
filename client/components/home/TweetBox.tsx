@@ -1,5 +1,20 @@
-import { useState, useContext } from 'react'
-import { TwitterContext } from '../../context/TwitterContext'
+import { create, CID, IPFSHTTPClient } from "ipfs-http-client";
+import React, { useState } from "react";
+const projectId = "2OH4HEi1zahea5EPXfsf3cM71OI";
+const projectSecret = "51f3da00cb408fcc3cfaa97a46594170";
+const authorization = "Basic " + btoa(projectId + ":" + projectSecret);
+let ipfs: IPFSHTTPClient | undefined;
+  try {
+    ipfs = create({
+      url: "https://ipfs.infura.io:5001/api/v0",
+      headers: {
+        authorization,
+      },
+    });
+  } catch (error) {
+    console.error("IPFS error ", error);
+    ipfs = undefined;
+  }
 import { BsCardImage, BsEmojiSmile } from 'react-icons/bs'
 import { RiFileGifLine, RiBarChartHorizontalFill } from 'react-icons/ri'
 import { IoMdCalendar } from 'react-icons/io'
@@ -21,17 +36,43 @@ const style = {
   activeSubmit: `bg-[#1d9bf0] text-white`,
 }
 
-function TweetBox() {
+function TweetBox({}) {
   const [tweetMessage, setTweetMessage] = useState('')
+  const [image, setImage] = useState('')
   const { contract,account } = useAppContext()
   const AddTweet=async(e:any)=>{
+    try {
+      
+    
     e.preventDefault()
   const newDate=new Date();
   let tp=newDate.getTime()
-   await  contract.createPost(tp,tweetMessage)
- // console.log(new Date(tp).toUTCString(),tp)
+  let img=image
+ let a=  await  contract.createPost(tp,tweetMessage,img)
+  console.log(a)
+} catch (error) {
+      console.log(error)
+}
   }
 
+  const onSubmitHandler = async (event:any) => {
+    event.preventDefault();
+    console.log('helloooo',event.target.files)
+    const form = event.target as HTMLFormElement;
+    const files = form.files;
+  
+    if (!files || files.length === 0) {
+      return alert("No files selected");
+    }
+  
+    const file = files[0];
+    // upload files
+    const result = await (ipfs as IPFSHTTPClient).add(file);
+   
+    setImage('https://test-project12.infura-ipfs.io/ipfs/' + result.cid.toString());
+  
+    //form.reset();
+  };
   return (
     <div className={style.wrapper}>
       <div className={style.tweetBoxLeft}>
@@ -52,9 +93,20 @@ function TweetBox() {
             placeholder="What's happening?"
             className={style.inputField}
           />
+          {image&&
+ <img
+ alt={`Uploaded `}
+ src={image}
+ style={{ maxWidth: "400px", margin: "15px" }}
+ //key={image.cid.toString() + index}
+ />
+}
+
           <div className={style.formLowerContainer}>
             <div className={style.iconsContainer}>
-              <BsCardImage className={style.icon} />
+            <input name="file" id='file1' style={{display:'none'}} type="file" onChange={onSubmitHandler} />
+
+              <BsCardImage onClick={()=>document.getElementById('file1')?.click()} className={style.icon} />
               <RiFileGifLine className={style.icon} />
               <RiBarChartHorizontalFill className={style.icon} />
               <BsEmojiSmile className={style.icon} />

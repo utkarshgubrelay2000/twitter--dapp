@@ -13,6 +13,7 @@ interface Tweet {
   timestamps: string;
   msg: string;
   owner:string
+  likes:[],id:number
 }
 
 interface Tweets extends Array<Tweet> {}
@@ -24,39 +25,25 @@ interface Author {
   isProfileImageNft: Boolean | undefined;
 }
 
-const ProfileTweets = () => {
+const ProfileTweets = (props:any) => {
   // const { currentUser } = useContext(TwitterContext)
-  const [tweets, setTweets] = useState<Tweets>([]);
+  const { tweets,LoadPost } = useAppContext();
+
   const [author, setAuthor] = useState<Author>({
     name: "",
-    profileImage: "",
+    profileImage: "",  
     walletAddress: "",
     isProfileImageNft: undefined,
   });
-  const { contract } = useAppContext();
-  useEffect(() => {
-    LoadPost();
-  }, [1]);
-  const LoadPost = async () => {
-try {
   
-
-    if (contract) {
-      let res = await contract.getAllPosts();
-      console.log(res);
-      setTweets(res)
-    }
-  } catch (error) {
-  console.log('hhh')
-  }
-  };
  
 
   return (
     <div className={style.wrapper}>
-      {tweets?.map((tweet: Tweet, index: number) => (
+      {tweets?.map((tweet: any, index: number) => (
         <Post
           key={index}
+        
           displayName={
             author.name === "Unnamed"
               ? `${tweet?.owner.slice(
@@ -70,9 +57,11 @@ try {
             4
           )}...${tweet?.owner.slice(41)}`}
           text={tweet.msg}
-          avatar={"https://images.pexels.com/photos/7651720/pexels-photo-7651720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
-        
+          owner={tweet.owner}
+          twetId={tweet.id}
+        retweet={tweet.likes}
           timestamp={tweet.timestamps}
+          avatar={tweet.image}
           isProfileImageNft={true}
         />
       ))}

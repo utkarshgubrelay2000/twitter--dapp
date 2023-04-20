@@ -47,6 +47,8 @@ function Feed(props:any) {
           retweet={tweet.reweet?.length}
           isProfileImageNft={true}
           timestamp={tweet.timestamp}
+          owner={tweet.owner}
+          twetId={tweet.id}
         />
       ))}
     </div>

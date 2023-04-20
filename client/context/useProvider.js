@@ -5,12 +5,17 @@ import { toast } from "react-toastify";
 export const TwitterContext = createContext();
 export const TwitterProvider = ({ children }) => {
   const [ether, setEther] = useState("");
+  const [tweets,setTweets]=useState([])
   const [account, setAccount] = useState("");
   const [provider, setProvider] = useState("");
+  const [profile, setProfile] = useState({});
   const [contract,setContract] = useState({});
+  const [userContract,setUserContract] = useState(null);
+  
   useEffect(() => {
     setProvider(window.ethereum);
     if (provider) {
+      getProfile()
       getEthers();
     }
   }, [provider]);
@@ -28,10 +33,23 @@ export const TwitterProvider = ({ children }) => {
       // .log(error);
     }
   };
+  const getProfile= async()=>{
+if(userContract){
+
+  let res=await userContract?.signin(account)
+  console.log(res,"heelo")
+  setProfile(res)
+}
+
+  }
+  useEffect(() => {
+    LoadPost();
+  }, [contract]);
   const chainChanged = () => {
     if (provider) {
       window.ethereum.on("accountsChanged", function (networkId) {
         setAccount(networkId[0]);
+        window.location.href='/login'
       });
       provider.on("networkChanged", function (networkId) {
         // Time to reload your interface with the new networkId
@@ -61,23 +79,45 @@ export const TwitterProvider = ({ children }) => {
   const extractContract = async (eth) => {
     try {
       if (provider) {
+        console.log(process.env.TWITTER_CONTRACT)
         const signerOrProvider = eth.getSigner();
         let contract = new ethers.Contract(
           process.env.TWITTER_CONTRACT,
           await LoadContract("Twitter"),
           signerOrProvider
         );
-        console.log(contract);
+        let ucontract = new ethers.Contract(
+          process.env.USER_CONTRACT,
+          await LoadContract("User"),
+          signerOrProvider
+        );
+      
+      
         setContract(contract)
+        setUserContract(ucontract)
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  const LoadPost = async () => {
+    try {
+        if (contract) {
+          let res = await contract?.getAllPosts();
+          console.log(res);
+          if(res){
+            setTweets(res)
+          }
+        }
+      } catch (error) {
+      console.log(error.message)
+      }
+      };
+
   return (
     <TwitterContext.Provider
-      value={{ chainChanged, provider, ether, connect, account,contract }}
+      value={{ chainChanged,profile,userContract,getProfile, provider,tweets,LoadPost, ether, connect, account,contract }}
     >
       {children}
     </TwitterContext.Provider>

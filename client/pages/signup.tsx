@@ -1,182 +1,77 @@
-import Image from "next/image";
-import { Button, FormControl, TextField } from "@mui/material";
-import { useState } from "react";
-import Layout from "../components/Layout";
-import twitterImg from "../assets/twitter.png";
-import useAuth from "../hooks/useAuth";
+import React, { useState } from 'react';
+import { uploadHandler } from '../lib/image';
+import { useAppContext } from '../context/useProvider';
+import { toast } from 'react-toastify';
 
-const style = {
-  wrapper: `flex justify-center h-screen w-screen select-none  text-white`,
-  content: `max-w-[1400px] w-2/3 flex justify-between`,
-  loginContainer: `w-full h-full flex flex-col justify-center items-center pb-8`,
-  walletConnectButton: `text-2xl text-black bg-white font-bold mb-[-3rem] mt-[3rem] px-6 py-4 rounded-full cursor-pointer hover:bg-[#d7dbdc]`,
-  loginContent: `text-3xl font-bold text-center mt-10`,
-};
 
-const Home = () => {
-  const [userData, setUserdata] = useState({email:""});
-  const { registerFunction } = useAuth();
-
-  const submitHandler = async () => {
-    console.log(userData);
-    if (userData?.email) {
-      let result = await registerFunction(userData);
-    } else {
-      alert("Email not found");
-    }
+const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState('');
+const {userContract} = useAppContext()
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+    // Handle login logic
+    console.log(image,email,password)
+    try {
+      
+    
+    let res=await userContract.signup({user_name:password,image_url:image,email})
+    
+    window.location.href='/login'
+  } catch (error:any) {
+    console.log(error.error)
+    toast.error(error.error.message)
+   
+  }
   };
-  const Logo = (
-    <div className={style.loginContainer}>
-      <Image src={twitterImg} width={200} height={60} />
-      <div className={style.loginContent}>Welcome To Daptter</div>
-    </div>
-  );
+  const handleChange=async(e:any)=>{
+    setLoading(true)
+    console.log('hello')
+ let image:any=await uploadHandler(e.target.files[0])
+ console.log(image)
+setImage(image)
+setLoading(false)
+  }
 
   return (
-    <Layout>
-      <div className={style.wrapper}>
-        <div className="input-container">
-          {Logo}
-          <div className="input-wrapper " style={{ display: "flex" }}>
-            <div style={{ display: "flex", width: "100%" }}>
-              <TextField
-                style={{
-                  backgroundColor: "white",
-                  color: "#1DA1F2",
-                  width: "100%",
-                  margin: 4,
-                }}
-                InputLabelProps={{ className: "textfield__label" }}
-                InputProps={{ className: "textfield__input" }}
-                label="First Name"
-                variant="outlined"
-                type="text"
-                name="first_name"
-                onChange={(e) =>
-                  setUserdata({ ...userData, [e.target.name]: e.target.value })
-                }
-                required
-              />
-              <TextField
-                //   backgroundColor: 'white',color:'#15202b'
-                style={{
-                  backgroundColor: "white",
-                  color: "#1DA1F2",
-                  margin: 4,
-                  width: "100%",
-                }}
-                InputLabelProps={{ className: "textfield__label" }}
-                InputProps={{ className: "textfield__input" }}
-                label="Last Name"
-                variant="outlined"
-                type="text"
-                name="last_name"
-                onChange={(e) =>
-                  setUserdata({ ...userData, [e.target.name]: e.target.value })
-                }
-                required
-              />
-            </div>
-          </div>
+    <div className="container">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h1 className="title">Sign Up</h1>
+        <h1 className="subtitle">Note account will be created as per selected wallet</h1>
+        <input
+          className="input-field"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e:any)  => setEmail(e.target.value)}
+        />
+        <input
+          className="input-field"
+          type="text"
+          placeholder="User Name"
+          value={password}
+          onChange={(e:any)  => setPassword(e.target.value)}
+        />
 
-          <div className="input-wrapper">
-            <FormControl>
-              <TextField
-                sx={{ minWidth: 550 }}
-                //   backgroundColor: 'white',color:'#15202b'
-                style={{
-                  backgroundColor: "white",
-                  color: "#1DA1F2",
+              <input  className="input-field hidden"  name="file" type="file" />
 
-                  margin: 4,
-                }}
-                name="email"
-                onChange={(e) =>
-                  setUserdata({ ...userData, [e.target.name]: e.target.value })
-                }
-                InputLabelProps={{ className: "textfield__label" }}
-                InputProps={{ className: "textfield__input" }}
-                label="Email"
-                variant="outlined"
-                type="text"
-                required
-              />
-            </FormControl>
-          </div>
+              <div className="upload-btn-wrapper">
+                {loading?
+  <button className="btn"  disabled>Loading...</button>
+: 
+  <button className="btn"  onClick={()=>document.getElementById('file')}>Upload Image</button>
+}
+<input type="file" id='file' name="image"  onChange={handleChange}/>
+</div>
 
-          <div className="input-wrapper">
-            <FormControl>
-              <TextField
-                sx={{ minWidth: 550 }}
-                //   backgroundColor: 'white',color:'#15202b'
-                style={{
-                  backgroundColor: "white",
-                  color: "#1DA1F2",
-
-                  margin: 4,
-                }}
-                name="password"
-                onChange={(e) =>
-                  setUserdata({ ...userData, [e.target.name]: e.target.value })
-                }
-                InputLabelProps={{ className: "textfield__label" }}
-                InputProps={{ className: "textfield__input" }}
-                label="Password"
-                variant="outlined"
-                type="password"
-                required
-              />
-            </FormControl>
-          </div>
-          <div className="input-wrapper">
-            <FormControl>
-              <TextField
-                sx={{ minWidth: 550 }}
-                //   backgroundColor: 'white',color:'#15202b'
-                style={{
-                  backgroundColor: "white",
-                  color: "#1DA1F2",
-
-                  margin: 4,
-                }}
-                InputLabelProps={{ className: "textfield__label" }}
-                InputProps={{ className: "textfield__input" }}
-                label="Wallet Address"
-                variant="outlined"
-                type="text"
-                name="wallet_address"
-                onChange={(e) =>
-                  setUserdata({ ...userData, [e.target.name]: e.target.value })
-                }
-                required
-              />
-            </FormControl>
-          </div>
-          <div className="signIn-button">
-            <Button
-              onClick={submitHandler}
-              sx={{
-                width: 550,
-                borderRadius: 1,
-                paddingTop: 1.1,
-                paddingBottom: 1.1,
-                background: "white",
-                color: "#ffffff",
-                border: "white 2px solid",
-
-                "&:hover": {
-                  backgroundColor: "#1DA1F2",
-                  color: "white",
-                },
-              }}
-            >
-              Sign in
-            </Button>
-          </div>
-        </div>
-      </div>
-    </Layout>
+        <button className="login-button" type="submit">
+          Sign Up
+        </button>
+      </form>
+    </div>
   );
 };
 
-export default Home;
+export default LoginPage;

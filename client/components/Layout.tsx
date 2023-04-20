@@ -21,7 +21,7 @@ const style = {
   loginContent: `text-3xl font-bold text-center mt-24`,
 };
 
-const Layout = ({ children }: any) => {
+const Layout = ({ children,isAuth }: any) => {
   const { provider,account,connect } = useAppContext();
   
   const [providerStatus, setProviderStatus] = useState("loading");
@@ -32,6 +32,13 @@ const Layout = ({ children }: any) => {
 useEffect(()=>{
 if(account){
   setProviderStatus("")
+}
+if(isAuth){
+let t=localStorage.getItem('token_twitter')
+if(!t){
+  window.location.href='/login'
+
+}
 }
 },[account])
   const changeProviderStatus =async () => {

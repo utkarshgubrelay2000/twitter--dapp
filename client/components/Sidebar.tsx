@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { TwitterContext } from '../context/TwitterContext'
 import SidebarOption from './SidebarOption'
@@ -27,7 +27,7 @@ const style = {
   navContainer: `flex-1`,
   profileButton: `flex items-center mb-6 cursor-pointer hover:bg-[#333c45] rounded-[100px] p-2`,
   profileLeft: `flex item-center justify-center mr-4`,
-  profileImage: `height-12 w-12 rounded-full`,
+  profileImage: `height-42 w-42 rounded-full`,
   profileRight: `flex-1 flex`,
   details: `flex-1`,
   name: `text-lg`,
@@ -41,9 +41,14 @@ interface SidebarProps {
 
 function Sidebar({ initialSelectedIcon }: SidebarProps) {
   const [selected, setSelected] = useState<String>(initialSelectedIcon)
-  const { accounts } = useAppContext()
-  const router = useRouter()
+  const {getProfile,account,profile} = useAppContext()
 
+  
+  const router = useRouter()
+  useEffect(()=>{
+    getProfile()
+  },[1])
+console.log(profile)
   return (
     <div className={style.wrapper}>
       <div className={style.twitterIconContainer}>
@@ -107,20 +112,20 @@ function Sidebar({ initialSelectedIcon }: SidebarProps) {
       <div className={style.profileButton}>
         <div className={style.profileLeft}>
           <img
-          //  src={currentUser.profileImage}
+            src={profile.image_url}
             alt='profile'
-            // className={
-            //   currentUser.isProfileImageNft
-            //     ? `${style.profileImage} smallHex`
-            //     : style.profileImage
-            // }
+            className={
+            
+                 `${style.profileImage} smallHex`
+          
+            }
           />
         </div>
         <div className={style.profileRight}>
           <div className={style.details}>
-            <div className={style.name}>"Utkarsh</div>
+            <div className={style.name}>{profile?.user_name}</div>
             <div className={style.handle}>
-              {/* @{accounts.slice(0, 6)}...{accounts.slice(39)} */}
+              @{account.slice(0, 6)}...{account.slice(39)}
             </div>
           </div>
           <div className={style.moreContainer}>
@@ -129,13 +134,13 @@ function Sidebar({ initialSelectedIcon }: SidebarProps) {
         </div>
       </div>
 
-      <Modal
+      {/* <Modal
         isOpen={Boolean(router.query.mint)}
         onRequestClose={() => router.back()}
         style={customStyles}
       >
         <ProfileImageMinter />
-      </Modal>
+      </Modal> */}
     </div>
   )
 }

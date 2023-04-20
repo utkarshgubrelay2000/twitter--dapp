@@ -4,7 +4,9 @@ import { useRouter } from 'next/router'
 import Modal from 'react-modal'
 
 import { useAppContext } from '../../context/useProvider'
-import { useState } from 'react'
+import useAuth from '../../hooks/useAuth'
+import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 Modal.setAppElement('#__next')
 
@@ -17,7 +19,7 @@ const style = {
   coverPhotoContainer: `flex items-center justify-center h-[15vh] overflow-hidden`,
   coverPhoto: `object-cover h-full w-full`,
   profileImageContainer: `w-full h-[6rem] rounded-full mt-[-3rem] mb-2 flex justify-start items-center px-3 flex justify-between`,
-  profileImage: `object-cover rounded-full h-full`,
+  profileImage: `object-cover rounded-full h-16`,
   profileImageNft: `object-cover h-full`,
   profileImageMint: `bg-white text-black px-3 py-1 rounded-full hover:bg-[#8899a6] cursor-pointer`,
   details: `px-3`,
@@ -42,17 +44,29 @@ interface UserData {
 const ProfileHeader = () => {
   //const { currentAccount, currentUser } = useContext(TwitterContext)
   const router = useRouter()
-  const { contract, account } = useAppContext();
+ const { loginFunction } = useAuth();
+  
+  const [userData, setUserData] = useState<any>({})
+  const {userContract,account,profile} = useAppContext()
+  useEffect(()=>{
+    handleSubmit()
+  },[0])
+  const handleSubmit = async () => {
 
-  const [userData, setUserData] = useState<UserData>({
-    name: '',
-    profileImage: '',
-    coverImage: '',
-    walletAddress: '',
-    tweets: [],
-    isProfileImageNft: undefined,
-  })
+     try {
+    
+    let res=await userContract.signin(account)
+    console.log(res,"heelo")
+    setUserData(res)
+ 
 
+  } catch (error:any) {
+   // console.log(error?.error?.message)
+    var errorMessage=error?.error?.message || "Something went wrong"
+    toast.error(errorMessage)
+   
+  }
+  };
 
   return (
     <div className={style.wrapper}>
@@ -61,7 +75,7 @@ const ProfileHeader = () => {
           <BsArrowLeftShort />
         </div>
         <div className={style.details}>
-          <div className={style.primary}>{userData.name}</div>
+          <div className={style.primary}>{userData.email}</div>
           <div className={style.secondary}>
             {userData.tweets?.length} Tweets
           </div>
@@ -69,7 +83,7 @@ const ProfileHeader = () => {
       </div>
       <div className={style.coverPhotoContainer}>
         <img
-          src='https://images.pexels.com/photos/14737351/pexels-photo-14737351.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+          src={profile.image_url}
           alt='cover'
           className={style.coverPhoto}
         />
@@ -79,13 +93,12 @@ const ProfileHeader = () => {
          
         >
           <img
-            src={userData.profileImage}
+            src={profile.image_url}
             alt={userData.walletAddress}
-            // className={
-            //   currentUser.isProfileImageNft
-            //     ? style.profileImageNft
-            //     : style.profileImage
-            // }
+            className={
+            
+                 style.profileImage
+            }
           />
         </div>
       </div>

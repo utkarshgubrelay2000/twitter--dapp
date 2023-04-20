@@ -12,6 +12,7 @@ function useAuth() {
   const loginFunction = async (data) => {
     let response = await login(data);
     console.log(response);
+    return response
     //  router.push('/api/auth/logout')
   };
   return {
