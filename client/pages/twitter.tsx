@@ -4,7 +4,6 @@ import ProfileTweets from '../components/profile/ProfileTweets'
 import Sidebar from '../components/Sidebar'
 import Feed from "../components/home/Feed";
 import { useAppContext } from '../context/useProvider';
-import { useEffect, useState } from 'react';
 
 const style = {
   wrapper: ` select-none bg-[#15202b] text-white`,

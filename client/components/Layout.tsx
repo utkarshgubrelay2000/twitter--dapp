@@ -34,7 +34,7 @@ if(account){
   setProviderStatus("")
 }
 if(isAuth){
-let t=localStorage.getItem('token_twitter')
+let t=localStorage.getItem('dapters')
 if(!t){
   window.location.href='/login'
 

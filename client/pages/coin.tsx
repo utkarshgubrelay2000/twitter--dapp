@@ -21,14 +21,14 @@ import { toast } from "react-toastify";
 // define Twitter color palette
 const twitterColors = {
   blue: "#1DA1F2",
-  darkBlue: "#2795D9",
+  darkBlue: "#15202b",
   lightBlue: "#EFF9FF",
 };
 
 const useStyles = {
   container: {
     alignItems: "center",
-    backgroundColor: twitterColors.lightBlue,
+    backgroundColor: twitterColors.darkBlue,
     padding: 50,
     width: 1000,
     display: "flex",
@@ -47,11 +47,9 @@ const useStyles = {
     width:500
   },
   buyButton: {
-    backgroundColor: twitterColors.darkBlue,
+ 
     color: "white",
-    "&:hover": {
-      backgroundColor: twitterColors.blue,
-    },
+
   },
   formControl: {
     minWidth: 600,
@@ -95,13 +93,14 @@ function ProfilePage() {
   const [users, setUsers] = useState([]);
 
   const [tabValue, setTabValue] = useState(0);
-  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
   const [toggle, setToggle] = useState(false);
   const [userAdd, setuserAdd] = useState("true");
   const { twidCoin, account,userContract, profile } = useAppContext();
 
   const handleBuyCoins = async () => {
     try {
+      
       const weiValue = ethers.utils.parseEther(".001");
 
       let res = await twidCoin.buyCoin(weiValue);
@@ -172,32 +171,43 @@ function ProfilePage() {
 
   const handleSendEther = async () => {
     // send ether logic here
-
+if(ether){
     const weiValue = ethers.utils.parseEther(ether.toString());
     let coinCost = await twidCoin.addFunds({ value: weiValue });
     console.log(coinCost);
-    getMyCoins()
+    getMyCoins()}
+    else{
+      toast.error("Enter Value")
+    }
   };
 
   const handleTweetSubmit = async() => {
  try {
-  const weiValue = ethers.utils.parseEther(ether.toString());
-console.log(weiValue)
-  let res=await twidCoin.transfer(selectedUser,weiValue)
-  console.log(res,weiValue)
+  if(ether){
 
- } catch (error) {
-  console.log(error)
- }
+    const weiValue = ethers.utils.parseEther(ether.toString());
+    console.log(weiValue)
+    let res=await twidCoin.transfer(selectedUser,weiValue)
+    console.log(res,weiValue)
+  }
+  else{
+    toast.error("Enter Value")
+  }
+    
+  } catch (error) {
+    console.log(error)
+  }
   };
 
   return (
     <Layout isAuth={true}>
+    <div className={style.wrapper}>
+     
       <Grid container spacing={10}>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <Sidebar initialSelectedIcon={"Profile"} />
         </Grid>
-        <Grid container item xs={10}>
+        <Grid container item xs={9}>
           <Grid item xs={12}>
             <div className={style.coverPhotoContainer}>
               <img   src={profile.image_url} alt="cover" className={style.coverPhoto} />
@@ -254,13 +264,21 @@ console.log(weiValue)
                 
               </div>
               <div style={useStyles.container}>
+              {/* <div style={useStyles.coinsContainer}>
+
               <Typography variant="body1">
                   Cost per coin: ${coinsValue}
                 </Typography>
+</div> */}
+                <div style={useStyles.coinsContainer}>
 
                 <Button style={useStyles.buyButton} onClick={handleBuyCoins}>
+                <Typography  variant="h6">
+
                   Buy Coins {coinCost}
+                </Typography>
                 </Button>
+                </div>
                 </div>
             </Box>
             <Box hidden={tabValue !== 1}>
@@ -301,7 +319,9 @@ console.log(weiValue)
                 </Select>
               </FormControl>
               {
-                toggle?
+                !selectedUser&&!toggle? <Button style={useStyles.sendButton} >
+                Select User
+              </Button>:toggle?
 
                 <Button style={useStyles.sendButton} onClick={handleTweetSubmit}>
                 Send Ether
@@ -317,7 +337,7 @@ console.log(weiValue)
           className="input-field"
           type="number"
         
-          placeholder="Send Ether to Your Account"
+          placeholder="Add Ether to Your Account"
           onChange={(e: any) => setEther(e.target.value)}
         />
               </FormControl>
@@ -328,6 +348,7 @@ console.log(weiValue)
           </Grid>
         </Grid>
       </Grid>
+     </div>
     </Layout>
   );
 }
