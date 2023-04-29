@@ -53,7 +53,8 @@ const useStyles = {
   },
   formControl: {
     minWidth: 600,
-    marginBottom: 20,
+   
+    margin:40,
     display:'flex'
   },
   sendButton: {
@@ -298,25 +299,32 @@ if(ether){
                 </div>
                 
               </div>
-                <InputLabel id="user-select-label">Select User</InputLabel>
+              <Grid container spacing={6}>
+        <Grid item xs={6}>
                 <input
           className="input-field"
           type="number"
-        
+          
           placeholder="Send Ether to Your Account"
           onChange={(e: any) => setEther(e.target.value)}
-        />
+          />
+          </Grid>      
+          <Grid item xs={6}>
         
                 <Select
                   labelId="user-select-label"
                   id="user-select"
+                  sx={{width:'100%',backgroundColor:'white'}}
                  // value={selectedUser}
+                 placeholder="Select Your Partner"
                   onChange={handleUserChange}
                 >
                   {users.map((item:any)=>{
                    
                  return   item?.wallet?.toUpperCase()!=account.toUpperCase()?(<MenuItem value={item.wallet}>{item.wallet}</MenuItem>):null})}
                 </Select>
+                </Grid>
+                </Grid>
               </FormControl>
               {
                 !selectedUser&&!toggle? <Button style={useStyles.sendButton} >
@@ -332,7 +340,8 @@ if(ether){
             </Box>
             <Box hidden={tabValue !== 2}>
               <FormControl style={useStyles.formControl}>
-            
+              <Grid container spacing={6}>
+        <Grid item xs={6}>
                 <input
           className="input-field"
           type="number"
@@ -340,10 +349,15 @@ if(ether){
           placeholder="Add Ether to Your Account"
           onChange={(e: any) => setEther(e.target.value)}
         />
-              </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+
               <Button style={useStyles.sendButton} onClick={handleSendEther}>
                 Send Ether
               </Button>
+        </Grid>
+        </Grid>
+              </FormControl>
             </Box>
           </Grid>
         </Grid>
