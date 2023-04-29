@@ -128,17 +128,7 @@ const Post = ({
   // };
   return (
     <div className={style.wrapper}>
-      <div>
-        <img
-          src={"img"}
-          alt={"jej"}
-          className={
-            isProfileImageNft
-              ? `${style.profileImage} smallHex`
-              : style.profileImage
-          }
-        />
-      </div>
+      
       <div className={style.postMain}>
         <div>
           <span className={style.headerDetails}>

@@ -3,6 +3,7 @@ import { uploadHandler } from '../lib/image';
 
 import { toast } from 'react-toastify';
 import { useAppContext } from '../context/useProvider';
+import Link from 'next/link';
 
 
 const LoginPage = () => {
@@ -70,6 +71,14 @@ setLoading(false)
         <button className="login-button" type="submit">
           Sign Up
         </button>
+        <span>
+           have a account <Link href='/login'>
+            <a>
+             Login {" "}
+            </a>
+            </Link>
+              now.
+        </span>
       </form>
     </div>
   );
