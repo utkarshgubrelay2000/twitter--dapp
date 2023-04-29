@@ -11,7 +11,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
-    },
+    }, 
     goerli: {
       url: process.env.SEPOLIAURL,
       accounts: [process.env.ACCOUNT]
