@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "../context/useProvider";
 import Layout from "../components/Layout";
 import Sidebar from "../components/Sidebar";
-import { makeStyles } from "@mui/styles";
 import {
   Typography,
   Button,
