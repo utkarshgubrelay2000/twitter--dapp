@@ -30,41 +30,45 @@ contract User {
     mapping(address => uint256) public users;
 
     function signup(UserDTO memory object) public {
-        uint256 tId = userId.current();
+    uint256 tId = userId.current();
+    userId.increment();
 
-        for (uint256 index = 0; index < all_users.length; index++) {
-            UserModal memory user = all_users[index];
+    for (uint256 index = 0; index < all_users.length; index++) {
+        UserModal memory user = all_users[index];
 
-            if (
-                user.wallet == msg.sender &&
-                keccak256(abi.encodePacked(user.email)) ==
-                keccak256(abi.encodePacked(object.email))
-            ) {
-                revert("Email Found");
-            }
+        if (
+            user.wallet == msg.sender &&
+            keccak256(abi.encodePacked(user.email)) ==
+            keccak256(abi.encodePacked(object.email))
+        ) {
+            revert("Email Found");
         }
-        UserModal memory newuser = UserModal({
-            user_name: object.user_name,
-            image_url: object.image_url,
-            wallet: msg.sender,
-            email: object.email,
-            id: tId,
-            isDeleted:false
-        });
-        emit UserSignup(msg.sender, object.user_name);
-        userId.increment();
-        users[msg.sender] = users_index;
-        users_index++;
-        all_users.push(newuser);
     }
+    UserModal memory newuser = UserModal({
+        user_name: object.user_name,
+        image_url: object.image_url,
+        wallet: msg.sender,
+        email: object.email,
+        id: tId,
+        isDeleted: false
+    });
+   emit UserSignup(msg.sender, object.user_name);
 
-    function signin(string memory email,address a) public view returns (UserModal memory b) {
-        uint256 usersId = users[a];
-console.log("heh",users[a]);
+    users[msg.sender] = users_index;
+    users_index++;
+    all_users.push(newuser);
+  
+}
+
+
+    function signin(string memory email) public view returns (UserModal memory b) {
+        uint256 usersId = users[msg.sender];
+
     if(usersId == 0){
     UserModal memory user = all_users[usersId];
-    console.log(user.wallet != a,a,user.wallet);
-    require(user.wallet == a, "Invalid user");
+    //console.log(user.wallet != a,a,user.wallet);
+    require(user.wallet == msg.sender, "Invalid user");
+    
        require(   keccak256(abi.encodePacked(user.email)) ==
                 keccak256(abi.encodePacked(email)), "Email Doesnt match");
     return user;
@@ -80,17 +84,22 @@ else{
     return user;
 }
     }
+function getProfileDetails(address a) public view returns (UserModal memory) {
+    uint256 uid = users[a];
+    UserModal memory user = all_users[uid];
+    console.log(user.wallet == a,user.wallet,a);
+  if(user.wallet == a)
+  {
 
- function getProfileDetails(address  a) public view returns (UserModal memory ) {
-        uint256 usersId = users[a];
-
-    require(usersId != 0, "User not found");
-
-    UserModal memory user = all_users[usersId];
-    require(user.wallet != address(0), "Invalid user");
-
+  console.log(user.wallet);
     return user;
-    }
+  }
+  else{
+    revert("Not found");
+  }
+}
+
+/// const User = await ethers.getContractFactory("User");    let user=await User.deploy();
 
 
     function update_profile(UserDTO memory object) public  returns(string memory)  {
