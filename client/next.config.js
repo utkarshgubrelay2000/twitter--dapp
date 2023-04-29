@@ -9,7 +9,12 @@ const nextConfig = {
    PROJECTID:process.env.PROJECTID,
    SUBDOMAIN:process.env.SUBDOMAIN,
    PROJECTSECRET:process.env.PROJECTSECRET,
+   TWIDCOIN_CONTRACT:process.env.TWIDCOIN_CONTRACT,
+   
 
+  },
+  images: {
+    domains: ['images.pexels.com'],
   },
 }
 
