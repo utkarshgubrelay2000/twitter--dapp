@@ -10,6 +10,7 @@ export const TwitterProvider = ({ children }) => {
   const [provider, setProvider] = useState("");
   const [profile, setProfile] = useState({});
   const [contract,setContract] = useState({});
+  const [twidCoin,settwidCoin] = useState(null);
   const [userContract,setUserContract] = useState(null);
   
   useEffect(() => {
@@ -34,11 +35,17 @@ export const TwitterProvider = ({ children }) => {
     }
   };
   const getProfile= async()=>{
+    try {
+      
+    
 if(userContract){
-
-  let res=await userContract?.signin(account)
+console.log('hello')
+  let res=await userContract?.getProfileDetails(account)
   console.log(res,"heelo")
   setProfile(res)
+}
+} catch (error) {
+   console.log(error)   
 }
 
   }
@@ -91,10 +98,15 @@ if(userContract){
           await LoadContract("User"),
           signerOrProvider
         );
-      
+        let tcontract = new ethers.Contract(
+          process.env.TWIDCOIN_CONTRACT,
+          await LoadContract("TwidCoin"),
+          signerOrProvider
+        );      
       
         setContract(contract)
         setUserContract(ucontract)
+        settwidCoin(tcontract)
       }
     } catch (error) {
       console.log(error);
@@ -117,7 +129,7 @@ if(userContract){
 
   return (
     <TwitterContext.Provider
-      value={{ chainChanged,profile,userContract,getProfile, provider,tweets,LoadPost, ether, connect, account,contract }}
+      value={{ chainChanged,profile,userContract,getProfile,twidCoin, provider,tweets,LoadPost, ether, connect, account,contract }}
     >
       {children}
     </TwitterContext.Provider>

@@ -55,7 +55,7 @@ const ProfileHeader = () => {
 
      try {
     
-    let res=await userContract.signin(account)
+    let res=await userContract.getProfileDetails(account)
     console.log(res,"heelo")
     setUserData(res)
  

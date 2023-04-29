@@ -13,13 +13,16 @@ const LoginPage = () => {
     e.preventDefault();
      try {
     
-    let res=await userContract.signin(account)
+    let res=await userContract.signin(email)
     console.log(res.email,"heelo")
-    await localStorage.setItem('dapters',res.email)
-    window.location.href='/twitter'
+    if(res.email){
+
+      await localStorage.setItem('dapters',res.email)
+      window.location.href='/twitter'
+    }
 
   } catch (error:any) {
-   // console.log(error?.error?.message)
+    console.log(error)
     var errorMessage=error?.error?.message || "Something went wrong"
     toast.error(errorMessage)
    
@@ -37,6 +40,13 @@ const LoginPage = () => {
           disabled
           placeholder="Email"
           value={account}
+        //  onChange={(e:any)  => setEmail(e.target.value)}
+        />
+         <input
+          className="input-field"
+          type="email"
+          placeholder="Email"
+          value={email}
           onChange={(e:any)  => setEmail(e.target.value)}
         />
 

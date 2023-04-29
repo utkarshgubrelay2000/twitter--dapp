@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { uploadHandler } from '../lib/image';
-import { useAppContext } from '../context/useProvider';
+
 import { toast } from 'react-toastify';
+import { useAppContext } from '../context/useProvider';
 
 
 const LoginPage = () => {
@@ -21,8 +22,8 @@ const {userContract} = useAppContext()
     
     window.location.href='/login'
   } catch (error:any) {
-    console.log(error.error)
-    toast.error(error.error.message)
+    var errorMessage=error?.error?.message || "Something went wrong"
+    toast.error(errorMessage)
    
   }
   };

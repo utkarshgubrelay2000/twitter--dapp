@@ -9,9 +9,6 @@ import { HiOutlineMail, HiMail } from 'react-icons/hi'
 import { FaRegListAlt, FaHashtag, FaBell } from 'react-icons/fa'
 import { CgMoreO } from 'react-icons/cg'
 import { VscTwitter } from 'react-icons/vsc'
-import Modal from 'react-modal'
-import { customStyles } from '../lib/constants'
-import ProfileImageMinter from './profile/mintingModal/ProfileImageMinter'
 import {
   BsBookmark,
   BsBookmarkFill,
@@ -48,7 +45,6 @@ function Sidebar({ initialSelectedIcon }: SidebarProps) {
   useEffect(()=>{
     getProfile()
   },[1])
-console.log(profile)
   return (
     <div className={style.wrapper}>
       <div className={style.twitterIconContainer}>
@@ -102,11 +98,11 @@ console.log(profile)
         <SidebarOption Icon={CgMoreO} text='More' />
         <div
           onClick={() =>
-            router.push(`${router.pathname}/?mint=`)
+            router.push(`${router.pathname}/coin`)
           }
           className={style.tweetButton}
         >
-          Mint
+          Transaction Page
         </div>
       </div>
       <div className={style.profileButton}>
