@@ -41,11 +41,11 @@ export const TwitterProvider = ({ children }) => {
 if(userContract){
 console.log('hello')
   let res=await userContract?.getProfileDetails(account)
-  console.log(res,"heelo")
+  // console.log(res,"heelo")
   setProfile(res)
 }
 } catch (error) {
-   console.log(error)   
+   // console.log(error)   
 }
 
   }
@@ -69,14 +69,14 @@ console.log('hello')
 
   }, [account]);
   const connect = async () => {
-  //  console.log(ether, "etherrss");
+  //  // console.log(ether, "etherrss");
     try {
       
    
     if (provider) {
       let accounts = await provider.request({ method: "eth_requestAccounts" });
       setAccount(accounts[0]);
-      console.log(account)
+      // console.log(account)
     }
   } catch (error) {
       
@@ -86,7 +86,7 @@ console.log('hello')
   const extractContract = async (eth) => {
     try {
       if (provider) {
-        console.log(process.env.TWITTER_CONTRACT)
+        console.log(process.env.TWITTER_CONTRACT,"contracttt",)
         const signerOrProvider = eth.getSigner();
         let contract = new ethers.Contract(
           process.env.TWITTER_CONTRACT,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../context/useProvider';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
@@ -9,6 +9,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const {userContract,account} = useAppContext()
+  useEffect(()=>{
+if(userContract){
+  console.log(userContract)
+}
+  },[])
   const handleSubmit = async (e:any) => {
     e.preventDefault();
      try {
