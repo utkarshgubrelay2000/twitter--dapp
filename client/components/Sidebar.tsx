@@ -24,7 +24,7 @@ const style = {
   navContainer: `flex-1`,
   profileButton: `flex items-center mb-6 cursor-pointer hover:bg-[#333c45] rounded-[100px] p-2`,
   profileLeft: `flex item-center justify-center mr-4`,
-  profileImage: `height-12 w- rounded-full`,
+  profileImage: `height-12 w-12 rounded-full`,
   profileRight: `flex-1 flex`,
   details: `flex-1`,
   name: `text-lg`,
@@ -45,6 +45,11 @@ function Sidebar({ initialSelectedIcon }: SidebarProps) {
   useEffect(()=>{
     getProfile()
   },[1])
+  const logoutHandler=async()=>{
+    await localStorage.removeItem('dapters');
+    window.location.href='/login'
+
+  }
   return (
     <div className={style.wrapper}>
       <div className={style.twitterIconContainer}>
@@ -94,8 +99,10 @@ function Sidebar({ initialSelectedIcon }: SidebarProps) {
           isActive={Boolean(selected === 'Profile')}
           setSelected={setSelected}
           redirect={'/profile'}
-        />
-            <SidebarOption Icon={BiLogOut} text='Logout' />
+        /> <a onClick={logoutHandler}>
+
+            <SidebarOption  Icon={BiLogOut} text='Logout' />
+        </a>
         <div
          
           className={style.tweetButton}
