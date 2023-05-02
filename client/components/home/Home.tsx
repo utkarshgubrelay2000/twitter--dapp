@@ -67,7 +67,8 @@ function Home() {
   item
   xs={6}
 >
-    <span className="name absolute top-0 right-0"><a href='/login'>Utkarsh Gubrelay</a></span> {/* Add absolute and top-0 classes */}
+    <span className="name absolute text-2xl top-6 right-0" style={{fontFamily:'cursive',zIndex:100}}><a href='/login'>
+      By-Utkarsh Gubrelay</a></span> {/* Add absolute and top-0 classes */}
   <div className="relative flex justify-center mt-30"> {/* Add relative and flex classes */}
     <img src="/assets/5429482.jpg" alt="example" className="image" style={{marginLeft: "-70%"}} /> {/* Add marginLeft style */}
   </div>

@@ -14,7 +14,7 @@ const style = {
   wrapper: `border-[#38444d] border-b`,
   header: `py-1 px-3 mt-2 flex items-center`,
   primary: `bg-transparent outline-none font-bold`,
-  secondary: `text-[#8899a6] text-xs`,
+  secondary: `text-[#fff] text-xs`,
   backButton: `text-3xl cursor-pointer mr-2 rounded-full hover:bg-[#313b44] p-1`,
   coverPhotoContainer: `flex items-center justify-center h-[15vh] overflow-hidden`,
   coverPhoto: `object-cover h-full w-full`,
@@ -23,7 +23,7 @@ const style = {
   profileImageNft: `object-cover h-full`,
   profileImageMint: `bg-white text-black px-3 py-1 rounded-full hover:bg-[#8899a6] cursor-pointer`,
   details: `px-3`,
-  nav: `flex justify-around mt-4 mb-2 text-xs font-semibold text-[#8899a6]`,
+  nav: `flex justify-around mt-4 mb-2 text-xs font-semibold text-[#fff]`,
   activeNav: `text-white`,
 }
 

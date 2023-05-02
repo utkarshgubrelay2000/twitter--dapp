@@ -37,11 +37,14 @@ function Feed(props:any) {
       {props?.tweet && props?.tweet.map((tweet:any, index:number) => (
         <Post
           key={index}
-          displayName={" "}
-          userName={`${tweet.user_id.slice(
+          displayName={tweet?.user_name+" "+ tweet?.owner.slice(
             0,
-            4
-          )}...${tweet.user_id.slice(41)}`}
+            4)
+    }
+    userName={tweet?.user_name+" "+ tweet?.owner.slice(
+      0,
+      4)
+}
           text={tweet.tweet}
           avatar={tweet.img}
           retweet={tweet.reweet?.length}

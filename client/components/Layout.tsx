@@ -9,16 +9,16 @@ const style = {
   headerDetails: `flex items-center`,
   name: `font-bold mr-1`,
   verified: `text-[0.8rem]`,
-  handleAndTimeAgo: `text-[#8899a6] ml-1`,
+  handleAndTimeAgo: `text-[#fff] ml-1`,
   tweet: `my-2`,
   image: `rounded-3xl`,
-  footer: `flex justify-between mr-28 mt-4 text-[#8899a6]`,
+  footer: `flex justify-between mr-28 mt-4 text-[#fff]`,
   footerIcon: `rounded-full text-lg p-2`,
   wrapper: `flex justify-center h-screen w-screen select-none  text-white`,
   content: `max-w-[1400px] w-2/3 flex justify-between`,
   loginContainer: `w-full h-full flex flex-col justify-center items-center pb-48`,
   walletConnectButton: `text-2xl text-black bg-white font-bold mb-[-3rem] mt-[3rem] px-6 py-4 rounded-full cursor-pointer hover:bg-[#d7dbdc]`,
-  loginContent: `text-3xl font-bold text-center mt-24`,
+  loginContent: `text-3xl text-[#fff] font-bold text-center mt-24`,
 };
 
 const Layout = ({ children,isAuth }: any) => {

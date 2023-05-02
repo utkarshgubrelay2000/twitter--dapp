@@ -29,7 +29,18 @@ const useStyles = {
   container: {
     alignItems: "center",
     backgroundColor: twitterColors.darkBlue,
-    padding: 50,
+    boxShadow: "0 0 10px #fff",
+    margin:10,
+    padding: 30,
+    width: 1000,
+    display: "flex",
+    
+  },
+  container2: {
+    alignItems: "center",
+    backgroundColor: twitterColors.darkBlue,
+
+    padding: 30,
     width: 1000,
     display: "flex",
     
@@ -38,9 +49,19 @@ const useStyles = {
     display: "flex",
     justifyContent: "center",
     alignItem: "space-between",
-    backgroundColor: twitterColors.blue,
-    color: "white",
+    backgroundColor: '#ffffff',
+  
     margin:'20px',
+    borderRadius: 5,
+    padding: "10px 20px",
+    marginBottom: 20,
+    width:500
+  },
+  inputContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItem: "space-between",
+ 
     borderRadius: 5,
     padding: "10px 20px",
     marginBottom: 20,
@@ -48,8 +69,8 @@ const useStyles = {
   },
   buyButton: {
  
-    color: "white",
-
+    backgroundColor: 'white',
+    color: "#15202b",
   },
   formControl: {
     minWidth: 600,
@@ -58,8 +79,10 @@ const useStyles = {
     display:'flex'
   },
   sendButton: {
-    backgroundColor: twitterColors.darkBlue,
-    color: "white",
+    backgroundColor: 'white',
+    color: "#15202b",
+    
+    padding:12,
     "&:hover": {
       backgroundColor: twitterColors.blue,
     },
@@ -68,11 +91,11 @@ const useStyles = {
 const style = {
   wrapper: ` bg-[#15202b] border-[#38444d] border-b`,
   header: `py-1 px-3 mt-2 flex items-center`,
-  primary: `bg-transparent outline-none font-bold`,
+  primary: `bg-transparent text-[#ffff] outline-none font-bold`,
   // wrapper: `flex justify-center h-screen w-screen select-none bg-[#15202b] text-white`,
   content: `max-w-[1400px] w-3/3 flex justify-between`,
   mainContent: `flex-[2] border-r border-l border-[#38444d] overflow-y-auto`,
-  secondary: `text-[#8899a6] text-xs`,
+  secondary: `text-[#fff] text-xs`,
   backButton: `text-3xl cursor-pointer mr-2 rounded-full hover:bg-[#313b44] p-1`,
   coverPhotoContainer: `h-[15vh] overflow-hidden`,
   coverPhoto: `object-cover h-full w-full`,
@@ -81,7 +104,7 @@ const style = {
   profileImageNft: `object-cover h-full`,
   profileImageMint: `bg-white text-black px-3 py-1 rounded-full hover:bg-[#8899a6] cursor-pointer`,
   details: `px-3`,
-  nav: `flex justify-around mt-4 mb-2 text-xs font-semibold text-[#8899a6]`,
+  nav: `flex justify-around mt-4 mb-2 text-xs font-semibold text-[#fff]`,
   activeNav: `text-white`,
 };
 
@@ -238,18 +261,12 @@ if(ether){
               onChange={handleTabChange}
               aria-label="Profile and Tweets tabs"
             >
-              <Tab label="Twid Coin" />
-              <Tab label="Transfer" />
-              <Tab label="ADD Funds" />
+              <Tab style={{color: 'white'}} label="Twid Coin" />
+              <Tab style={{color: 'white'}} label="Transfer" />
+              <Tab style={{color: 'white'}} label="ADD Funds" />
             </Tabs>
-            <Box
-              sx={{
-                width: 1000,
-                height: 1000,
-              }}
-              hidden={tabValue !== 0}
-            >
-              <div style={useStyles.container}>
+            <Box >
+            <div style={useStyles.container}>
                 <div style={useStyles.coinsContainer}>
                   <Typography  variant="h6">
                     Coins in your wallet: {coins}
@@ -264,13 +281,18 @@ if(ether){
                 </div>
                 
               </div>
-              <div style={useStyles.container}>
-              {/* <div style={useStyles.coinsContainer}>
-
-              <Typography variant="body1">
-                  Cost per coin: ${coinsValue}
-                </Typography>
-</div> */}
+            </Box>
+            <Box
+              sx={{
+                width: 1000,
+                height: 1000,
+              }}
+              hidden={tabValue !== 0}
+            >
+             
+              <div className="flex justify-center">
+              <div >
+            
                 <div style={useStyles.coinsContainer}>
 
                 <Button style={useStyles.buyButton} onClick={handleBuyCoins}>
@@ -281,36 +303,24 @@ if(ether){
                 </Button>
                 </div>
                 </div>
+                </div>
             </Box>
             <Box hidden={tabValue !== 1}>
               <FormControl style={useStyles.formControl}>
-                    <div style={useStyles.container}>
-                <div style={useStyles.coinsContainer}>
-                  <Typography  variant="h6">
-                    Coins in your wallet: {coins}
-                  </Typography>
                 
-                </div>
-                <div style={useStyles.coinsContainer}>
-                  <Typography  variant="h6">
-                    Balance in your wallet: {bal}
-                  </Typography>
-                
-                </div>
-                
-              </div>
-              <Grid container spacing={6}>
-        <Grid item xs={6}>
+            <div style={useStyles.container2}>
+            <div style={useStyles.inputContainer}>
+            
                 <input
           className="input-field"
           type="number"
           
-          placeholder="Send Ether to Your Account"
+          placeholder="Send Ether to Your  Friends Account"
           onChange={(e: any) => setEther(e.target.value)}
           />
-          </Grid>      
-          <Grid item xs={6}>
-        
+          </div>
+          <div style={useStyles.inputContainer}>
+         
                 <Select
                   labelId="user-select-label"
                   id="user-select"
@@ -321,22 +331,36 @@ if(ether){
                 >
                   {users.map((item:any)=>{
                    
-                 return   item?.wallet?.toUpperCase()!=account.toUpperCase()?(<MenuItem value={item.wallet}>{item.wallet}</MenuItem>):null})}
+                 return   item?.wallet?.toUpperCase()!=account.toUpperCase()?(<MenuItem value={item.wallet}>{item.user_name}</MenuItem>):null})}
                 </Select>
-                </Grid>
-                </Grid>
+                </div>
+                </div>
+             
               </FormControl>
+              <div className="flex justify-center">
+
+             
               {
-                !selectedUser&&!toggle? <Button style={useStyles.sendButton} >
+                !selectedUser&&!toggle? <Button style={useStyles.buyButton} >
+                <Typography  variant="h6">
+
                 Select User
+                </Typography>
               </Button>:toggle?
 
-                <Button style={useStyles.sendButton} onClick={handleTweetSubmit}>
+                <Button style={useStyles.buyButton} onClick={handleTweetSubmit}>
+                <Typography  variant="h6">
+
                 Send Ether
+                </Typography>
               </Button>
-              :   <Button style={useStyles.sendButton} onClick={toggleApprovel}>
+              :   <Button style={useStyles.buyButton} onClick={toggleApprovel}>
+                <Typography  variant="h6">
+
               Send Approval
+              </Typography>
             </Button>}
+            </div>
             </Box>
             <Box hidden={tabValue !== 2}>
               <FormControl style={useStyles.formControl}>
@@ -352,7 +376,7 @@ if(ether){
         </Grid>
         <Grid item xs={6}>
 
-              <Button style={useStyles.sendButton} onClick={handleSendEther}>
+              <Button style={useStyles.buyButton} onClick={handleSendEther}>
                 Send Ether
               </Button>
         </Grid>

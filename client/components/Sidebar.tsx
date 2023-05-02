@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { TwitterContext } from '../context/TwitterContext'
 import SidebarOption from './SidebarOption'
 import { RiHome7Line, RiHome7Fill, RiFileList2Fill } from 'react-icons/ri'
-import { BiHash } from 'react-icons/bi'
+import { BiHash, BiLogOut } from 'react-icons/bi'
 import { FiBell, FiMoreHorizontal } from 'react-icons/fi'
 import { HiOutlineMail, HiMail } from 'react-icons/hi'
 import { FaRegListAlt, FaHashtag, FaBell } from 'react-icons/fa'
@@ -24,11 +24,11 @@ const style = {
   navContainer: `flex-1`,
   profileButton: `flex items-center mb-6 cursor-pointer hover:bg-[#333c45] rounded-[100px] p-2`,
   profileLeft: `flex item-center justify-center mr-4`,
-  profileImage: `height-42 w-42 rounded-full`,
+  profileImage: `height-12 w- rounded-full`,
   profileRight: `flex-1 flex`,
   details: `flex-1`,
   name: `text-lg`,
-  handle: `text-[#8899a6]`,
+  handle: `text-[#fff]`,
   moreContainer: `flex items-center mr-2`,
 }
 
@@ -95,16 +95,22 @@ function Sidebar({ initialSelectedIcon }: SidebarProps) {
           setSelected={setSelected}
           redirect={'/profile'}
         />
-        <SidebarOption Icon={CgMoreO} text='More' />
+            <SidebarOption Icon={BiLogOut} text='Logout' />
         <div
          
           className={style.tweetButton}
         >
+          {router.pathname!=='/coin'?
           <a href='/coin'>
 
           Transaction Page
           </a>
+         :<a href='/twitter'>
+
+         Twid Page
+         </a> }
         </div>
+    
       </div>
       <div className={style.profileButton}>
         <div className={style.profileLeft}>
