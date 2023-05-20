@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import { useAppContext } from "../context/useProvider";
 import { useEffect, useState } from "react";
@@ -21,40 +20,36 @@ const style = {
   loginContent: `text-3xl text-[#fff] font-bold text-center mt-24`,
 };
 
-const Layout = ({ children,isAuth }: any) => {
-  const { provider,account,connect } = useAppContext();
-  
+const Layout = ({ children, isAuth }: any) => {
+  const { provider, account, connect } = useAppContext();
+  let networkIds = [11155111, 1322];
+
   const [providerStatus, setProviderStatus] = useState("loading");
   useEffect(() => {
     changeProviderStatus();
-    
   }, [provider]);
-useEffect(()=>{
-if(account){
-  setProviderStatus("")
-}
-if(isAuth){
-let t=localStorage.getItem('dapters')
-if(!t){
-  window.location.href='/login'
+  useEffect(() => {
+    if (account) {
+      setProviderStatus("");
+    }
+    if (isAuth) {
+      let t = localStorage.getItem("dapters");
+      if (!t) {
+        window.location.href = "/login";
+      }
+    }
+  }, [account]);
+  const changeProviderStatus = async () => {
+    const networkId = await provider.networkVersion;
 
-}
-}
-},[account])
-  const changeProviderStatus =async () => {
-    console.log(account)
     if (provider) {
-      if(!account){
-      setProviderStatus("waitingForConnection");
-    } else{
-      setProviderStatus("")
-    }
-  
-    } else {
-      setProviderStatus("metamaskNotFound");
-    }
+      let res = networkIds.find((item) => item == networkId);
+      if (!res) return setProviderStatus("nonetwork");
+      if (!account) return setProviderStatus("waitingForConnection");
+      else return setProviderStatus("");
+    } else setProviderStatus("metamaskNotFound");
   };
-  
+
   const noUserFound = (
     <div className={style.loginContainer}>
       <Image src="/assets/metamask.png" width={200} height={200} />
@@ -65,6 +60,14 @@ if(!t){
     </div>
   );
 
+  const nonetwork = (
+    <div className={style.loginContainer}>
+      <Image src="/assets/metamask.png" width={200} height={200} />
+      <button className={style.walletConnectButton} >
+        Switch to correct network
+      </button>
+    </div>
+  );
   const noMetaMaskFound = (
     <div className={style.loginContainer}>
       <Image src="/assets/metamask.png" width={200} height={200} />
@@ -83,7 +86,7 @@ if(!t){
 
   const error = (
     <div className={style.loginContainer}>
-      <Image src='/assets/error.png' width={250} height={200} />
+      <Image src="/assets/error.png" width={250} height={200} />
       <div className={style.loginContent}>
         An error occurred. Please try again later or from another browser.
       </div>
@@ -95,16 +98,38 @@ if(!t){
       <div className={style.loginContent}>Loading...</div>
     </div>
   );
-  
+  useEffect(() => {
+    chainChanged();
+  }, [provider]);
+  const chainChanged = () => {
+    if (provider) {
+      provider.on("networkChanged", function (networkId: number) {
+        // Time to reload your interface with the new networkId
+        let res = networkIds.find((item) => item == networkId);
+        if (!res) {
+          console.log("not found");
+          setProviderStatus("nonetwork");
+        }
+        else{
+          changeProviderStatus()
+        }
+        // window.location.reload()
+      });
+    }
+  };
   return (
     <>
-      {providerStatus === "loading"
-        ? loading
-        : providerStatus === "metamaskNotFound"
-        ? noMetaMaskFound
-        : providerStatus === "waitingForConnection"
-        ? noUserFound
-        : <>{ children }</>}
+      {providerStatus === "loading" ? (
+        loading
+      ) : providerStatus == "nonetwork" ? (
+        nonetwork
+      ) : providerStatus === "metamaskNotFound" ? (
+        noMetaMaskFound
+      ) : providerStatus === "waitingForConnection" ? (
+        noUserFound
+      ) : (
+        <>{children}</>
+      )}
     </>
   );
 };

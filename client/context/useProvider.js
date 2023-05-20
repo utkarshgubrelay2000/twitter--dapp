@@ -12,6 +12,8 @@ export const TwitterProvider = ({ children }) => {
   const [contract,setContract] = useState({});
   const [twidCoin,settwidCoin] = useState(null);
   const [userContract,setUserContract] = useState(null);
+  const [isNetworkCorrect,setIsNetworkCorrect] = useState(true);
+  let networkIds =[11155111,1322]
   
   useEffect(() => {
     setProvider(window.ethereum);
@@ -58,10 +60,7 @@ console.log('hello')
         setAccount(networkId[0]);
         window.location.href='/login'
       });
-      provider.on("networkChanged", function (networkId) {
-        // Time to reload your interface with the new networkId
-        // .log("provider");
-      });
+    
     }
   };
   useEffect(() => {
@@ -86,7 +85,7 @@ console.log('hello')
   const extractContract = async (eth) => {
     try {
       if (provider) {
-        console.log(process.env.TWITTER_CONTRACT,"contracttt",)
+      //  console.log(process.env.TWITTER_CONTRACT,"contracttt",)
         const signerOrProvider = eth.getSigner();
         let contract = new ethers.Contract(
           process.env.TWITTER_CONTRACT,
@@ -129,7 +128,7 @@ console.log('hello')
 
   return (
     <TwitterContext.Provider
-      value={{ chainChanged,profile,userContract,getProfile,twidCoin, provider,tweets,LoadPost, ether, connect, account,contract }}
+      value={{ chainChanged,profile,isNetworkCorrect,userContract,getProfile,twidCoin, provider,tweets,LoadPost, ether, connect, account,contract }}
     >
       {children}
     </TwitterContext.Provider>

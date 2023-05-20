@@ -31,7 +31,7 @@ function Home() {
               </div>
             </div>
             <div className="w-50">
-              <h1>Welcome to my website!</h1>
+              <h1>Welcome to Twider!</h1>
               <p>
                 My app is essentially a Twitter-like platform that uses the
                 Solidity network and Sepoliafaucet text network to authenticate

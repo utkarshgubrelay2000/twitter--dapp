@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../context/useProvider';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import Layout from '../components/Layout';
 
 
 const LoginPage = () => {
@@ -35,6 +36,7 @@ if(userContract){
   };
 
   return (
+    <Layout>
     <div className="container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h1 className="title">Log In</h1>
@@ -70,6 +72,7 @@ if(userContract){
         </span>
       </form>
     </div>
+    </Layout>
   );
 };
 
