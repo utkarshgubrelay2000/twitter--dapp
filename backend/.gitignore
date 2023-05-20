@@ -1,7 +1,0 @@
-/node_modules
-*.prod
-*.local
-*.env
-./local.env
-./prod.env
-/dist
